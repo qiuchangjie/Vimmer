@@ -8,7 +8,10 @@ if has("gui_running")
     set showtabline=0 " 隐藏Tab栏
 endif
 "vim-plug
-call plug#begin('~/.vim/plugged')
+call plug#begin('D:/Software/Vim/plugged')
+"call plug#begin('~/.vim/plugged')
+
+let &pythonthreedll = 'E:/Software/Python38/python38.dll'
 
 "IDE启动界面
 Plug 'mhinz/vim-startify'
@@ -22,6 +25,7 @@ let g:coc_global_extensions=[
             \'coc-emmet',
             \'coc-clangd',
             \'coc-java',
+            \'coc-lua',
             \'coc-pairs',
             \'coc-json',
             \'coc-lists',
@@ -116,8 +120,8 @@ Plug 'uiiaoo/java-syntax.vim', {'for':'java'}
 Plug 'othree/html5.vim', {'for':['html','vue','php']}
 Plug 'mattn/emmet-vim', {'for':['html','xml','vue','php','typescriptreact','javascriptreact']}
 "Plug 'alvan/vim-closetag', {'for':['html','xml','vue','php','typescriptreact','javascriptreact']}
-Plug 'junegunn/fzf', { 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+"== Plug 'junegunn/fzf', { 'do': './install --bin' }
+"== Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 "Plug 'isRuslan/vim-es6', {'for':['html','php','vue','typescriptreact','javascript','typescript','typescript.tsx','javascript.jsx']}
 "Plug 'yuezk/vim-js', {'for':['vue','html','php','typescriptreact','typescript.tsx','javascript.jsx']}
@@ -140,6 +144,9 @@ Plug 'OmniSharp/omnisharp-vim', {'for':'cs'}
 "Plug 'OrangeT/vim-csharp', {'for':'cs'}
 Plug 'w0rp/ale', {'for':'cs'}
 Plug 'hail2u/vim-css3-syntax',{'for':['html','vue','php']}
+Plug 'Yggdroot/LeaderF',{'do':':LeaderfInstallCExtension'}
+Plug 'scrooloose/nerdcommenter'
+
 let g:vue_pre_processors = []
 call plug#end()
 "------------------------------coc.nvim---------------------------------------
@@ -262,6 +269,25 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 "------------------------------coc.nvim---------------------------------------------
 
+"------------------------------LeaderF---------------------------------------------
+
+let g:Lf_PreviewInPopup = 1
+let g:Lf_UseCache = 0
+let g:Lf_WildIgnore = {
+        \ 'dir': ['.svn','.git','.hg'],
+        \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]', '*.meta']
+        \}
+nmap <C-S> :Leaderf rg<CR>
+nmap <C-P> :Leaderf file<CR>
+nmap <C-F> :Leaderf function<CR>
+nmap <C-B> :Leaderf buffer<CR>
+imap <C-S> <Esc>:Leaderf rg<CR>
+imap <C-P> <Esc>:Leaderf file<CR>
+imap <C-F> <Esc>:Leaderf function<CR>
+imap <C-B> <Esc>:Leaderf buffer<CR>
+
+"------------------------------LeaderF---------------------------------------------
+
 
 "vim基础设置-----------------------------------------------------------------------------
 
@@ -286,7 +312,8 @@ set lazyredraw
 "-------------------显示相关---------------------------------------
 set cul "高亮光标所在行
 set cuc
-color monokain     " 设置背景主题
+"color monokain     " 设置背景主题
+colorscheme one
 set ruler           " 显示标尺
 set showcmd         " 输入的命令显示出来，看的清楚些
 set scrolloff=2     " 光标移动到buffer的顶部和底部时保持3行距离
@@ -309,6 +336,7 @@ set expandtab
 set smarttab
 " 显示行号
 set number
+set relativenumber
 set showmode
 
 " 历史记录数
@@ -325,8 +353,11 @@ set viminfo+=!
 " 带有如下符号的单词不要被换行分割
 set iskeyword+=$,@,%,#,-,_
 
-set guifont=CodeNewRoman_Nerd_Font_Mono:h13
-set guifontwide="微软雅黑":h12
+"set guifont=CodeNewRoman_Nerd_Font_Mono:h13
+"set guifont=SauceCodePro_Nerd_Font_Mono:h13
+"set guifont=JetBrainsMono_Nerd_Font_Mono:h13
+set guifont=Hack_Nerd_Font_Mono:h13
+"set guifontwide="微软雅黑":h12
 
 filetype plugin on
 
@@ -449,64 +480,64 @@ set showmatch
 set matchtime=5
 " 光标移动到buffer的顶部和底部时保持3行距离
 set scrolloff=5
-set autochdir "输出时只有文件名，不带./ ../等目录前缀(默认了执行％在当前的目录下)
+"set autochdir "输出时只有文件名，不带./ ../等目录前缀(默认了执行％在当前的目录下)
 set langmenu=zh_CN.UTF-8
 set termencoding=UTF-8
 set encoding=UTF-8
 set fileencodings=utf-8,ucs-bom,gbk,cp936,gb2312,gb18030
 
 "在插入模式中使用Ctrl+v粘贴全局剪贴板内容
-imap <C-V> <Esc>"+gp
-nmap <C-V> "+gp
+"imap <C-V> <Esc>"+gp
+"nmap <C-V> "+gp
 
 "在Visual模式中使用Ctrl+c复制内容到全局剪贴板
-vnoremap <C-c> "+y
+"vnoremap <C-c> "+y
 
 "在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
-vnoremap <C-x> "+x
+"vnoremap <C-x> "+x
 
 "
 "fzf-----------------------------------------------------------------------
-function! s:fzf_statusline()
-    " Override statusline as you like
-    highlight fzf1 ctermfg=161 ctermbg=251
-    highlight fzf2 ctermfg=23 ctermbg=251
-    highlight fzf3 ctermfg=237 ctermbg=251
-    setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
-endfunction
-
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
-" [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
-" [[B]Commits] Customize the options used by 'git log':
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
-" [Commands] --expect expression for directly executing the command
-let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-" Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-
-" Insert mode completion
-imap <c-x><c-w> <plug>(fzf-complete-word)
-imap <c-x><c-p> <plug>(fzf-complete-path)
-imap <c-x><c-f> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-nmap <C-F> :Files<CR>
-nmap <C-P> :Files<CR>
-nmap ff :Files<CR>
-imap <C-P> <Esc>:Files<CR>
-nmap <C-B> :Buffers<CR>
-nmap fb :Buffers<CR>
-imap <C-B> <Esc>:Buffers<CR>
-nmap <C-T> :Tags<CR>
-nmap ft :Tags<CR>
-let g:fzf_action = { 'ctrl-b': 'edit' }
-
-" Advanced customization using Vim function
-inoremap <expr> <c-x><c-w> fzf#vim#complete#word({'right': '19%'})
+"== function! s:fzf_statusline()
+"==     " Override statusline as you like
+"==     highlight fzf1 ctermfg=161 ctermbg=251
+"==     highlight fzf2 ctermfg=23 ctermbg=251
+"==     highlight fzf3 ctermfg=237 ctermbg=251
+"==     setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+"== endfunction
+"== 
+"== autocmd! User FzfStatusLine call <SID>fzf_statusline()
+"== " [Buffers] Jump to the existing window if possible
+"== let g:fzf_buffers_jump = 1
+"== " [[B]Commits] Customize the options used by 'git log':
+"== let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+"== " [Tags] Command to generate tags file
+"== let g:fzf_tags_command = 'ctags -R'
+"== " [Commands] --expect expression for directly executing the command
+"== let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+"== " Mapping selecting mappings
+"== nmap <leader><tab> <plug>(fzf-maps-n)
+"== xmap <leader><tab> <plug>(fzf-maps-x)
+"== omap <leader><tab> <plug>(fzf-maps-o)
+"== 
+"== " Insert mode completion
+"== imap <c-x><c-w> <plug>(fzf-complete-word)
+"== imap <c-x><c-p> <plug>(fzf-complete-path)
+"== imap <c-x><c-f> <plug>(fzf-complete-file-ag)
+"== imap <c-x><c-l> <plug>(fzf-complete-line)
+"== nmap <C-F> :Rg<CR>
+"== nmap <C-P> :Files<CR>
+"== nmap ff :Files<CR>
+"== imap <C-P> <Esc>:Files<CR>
+"== nmap <C-B> :Buffers<CR>
+"== nmap fb :Buffers<CR>
+"== imap <C-B> <Esc>:Buffers<CR>
+"== nmap <C-T> :Tags<CR>
+"== nmap ft :Tags<CR>
+"== let g:fzf_action = { 'ctrl-b': 'edit' }
+"== 
+"== " Advanced customization using Vim function
+"== inoremap <expr> <c-x><c-w> fzf#vim#complete#word({'right': '19%'})
 
 " Find Nearest
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
